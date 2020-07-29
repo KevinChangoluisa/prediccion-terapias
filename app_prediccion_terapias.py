@@ -1,23 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jul 20 00:59:31 2020
-
-@author: KEVIN
-"""
 from pymongo import MongoClient
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from time import time
-from flask import Flask, redirect,request
+from flask import Flask, request, redirect
 app = Flask(__name__)
-# settings
+#settings
 app.secret_key = "mysecretkey"
-
-tiempo_inicial = time()
 def conectarMongo():
-    mongoClient = MongoClient(
-        "mongodb+srv://kevin:k171812@cluster0.hmqlq.mongodb.net/<dbname>?retryWrites=true&w=majority")
+    mongoClient = MongoClient("mongodb+srv://kevin:k171812@cluster0.hmqlq.mongodb.net/<dbname>?retryWrites=true&w=majority")
     db = mongoClient.Centro_Medico
     collection = db.Terapias
     data = pd.DataFrame(list(collection.find()))
@@ -150,6 +140,5 @@ def Index():
         y_pred=modelo(x_new_diagnostico)
         url="http://localhost/ejemplo_form/leer.php?y_pred="+y_pred
         return redirect(url)
-
-app.run(host='0.0.0.0',port = 8080)
-
+if __name__ == "__main__":
+	app.run(host='0.0.0.0',port = 8080)
